@@ -1,0 +1,134 @@
+name: bizsmartmanagerpos
+description: "BizSmart Manager POS-frontend"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.8.1 <4.0.0'    # fixed from ^3.8.1 — SDK needs a range not ^
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  
+  cupertino_icons: ^1.0.8
+
+ 
+
+  
+  provider: ^6.1.2
+
+  # ─────────────────────────────────────────
+  # NETWORKING — talking to your Django backend
+  # ─────────────────────────────────────────
+
+  # HTTP client used in core/api_client.dart
+  # Handles JWT headers, timeouts, interceptors automatically
+  dio: ^5.4.3
+
+  # Shows every API request & response in your terminal
+  # Only active during development — helps you debug Django calls
+  pretty_dio_logger: ^1.3.1
+
+  # ─────────────────────────────────────────
+  # AUTHENTICATION
+  # ─────────────────────────────────────────
+
+  # Stores JWT access + refresh tokens securely on device
+  # Uses Android Keystore on Android, Keychain on iOS
+  # Much safer than SharedPreferences for sensitive tokens
+  flutter_secure_storage: ^9.0.0
+
+  # ─────────────────────────────────────────
+  # LOCAL DATABASE — offline mode
+  # ─────────────────────────────────────────
+
+  # SQLite for Flutter — used in services/database_service.dart
+  # Stores products, sales, expenses locally when offline
+  sqflite: ^2.3.3
+
+  # Works together with sqflite
+  # Helps Flutter find where to save the database file on the device
+  path: ^1.9.0
+
+  # ─────────────────────────────────────────
+  # SMALL SETTINGS STORAGE
+  # ─────────────────────────────────────────
+
+  # Stores simple app settings as key-value pairs
+  # Example: theme preference, last sync time, default tax rate
+  # NOT for tokens — use flutter_secure_storage for those
+  shared_preferences: ^2.2.3
+
+  # ─────────────────────────────────────────
+  # NETWORK STATUS DETECTION
+  # ─────────────────────────────────────────
+
+  # Tells your app when device goes online or offline
+  # Used in sync_service.dart to know when to push
+  # cached SQLite data up to your Django backend
+  connectivity_plus: ^6.0.3
+
+  # ─────────────────────────────────────────
+  # FORMATTING
+  # ─────────────────────────────────────────
+
+  # Formats currency as KES 1,500.00
+  # Formats dates as "12 Jun 2026"
+  # Essential for receipts, reports, and the KRA tax screen
+  intl: ^0.19.0
+
+  # Generates unique IDs for every sale, product, receipt
+  # Example: "f47ac10b-58cc" — ensures no two records ever clash
+  uuid: ^4.4.0
+
+  # ─────────────────────────────────────────
+  # PDF RECEIPTS & KRA ETR COMPLIANCE
+  # ─────────────────────────────────────────
+
+  # Creates PDF documents inside Flutter
+  # Used to generate KRA-compliant ETR receipts and iTax exports
+  pdf: ^3.10.8
+
+  # Works with the pdf package above
+  # Handles sharing and printing the generated PDF receipts
+  printing: ^5.12.0
+
+  # ─────────────────────────────────────────
+  # CHARTS — AI insights dashboard
+  # ─────────────────────────────────────────
+
+  # Draws sales trend charts, profit graphs, stock level bars
+  # Used in screens/insights_screen.dart
+  fl_chart: ^0.68.0
+
+  # ─────────────────────────────────────────
+  # BARCODE SCANNING
+  # ─────────────────────────────────────────
+
+  mobile_scanner: ^5.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+ 
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  
+  # assets:
+  #   - assets/images/logo.png
+  #   - assets/images/kra_logo.png
+
+
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 700
