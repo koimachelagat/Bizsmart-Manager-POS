@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
         title: const Text('Dashboard'),
         actions: [
           // User info + logout
-          PopupMenuButton(
+          PopupMenuButton<Object>(
             icon: const CircleAvatar(
               backgroundColor: Colors.white24,
               child: Icon(Icons.person, color: Colors.white),

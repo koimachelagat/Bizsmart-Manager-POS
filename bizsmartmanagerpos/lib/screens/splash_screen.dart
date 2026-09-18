@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 import '../core/app_routes.dart';
 import '../theme/app_theme.dart';
@@ -18,12 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Run auth check as soon as screen loads
     _checkAuth();
   }
 
   Future<void> _checkAuth() async {
-    // Small delay so the splash is visible
+    // Show splash for 2 seconds
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
@@ -33,10 +33,34 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    Navigator.pushReplacementNamed(
-      context,
-      isLoggedIn ? AppRoutes.dashboard : AppRoutes.login,
-    );
+    if (isLoggedIn) {
+      // Has saved token — go to dashboard
+      Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+    } else {
+      // Check if business setup was ever completed
+      final setupComplete = await _getSetupComplete();
+
+      if (!mounted) return;
+
+      if (setupComplete) {
+        // Setup done before — go to login
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      } else {
+        // Very first time — go to onboarding wizard
+        Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+      }
+    }
+  }
+
+  // Reads the setup_complete flag from device storage
+  Future<bool> _getSetupComplete() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // Returns false if flag doesn't exist yet (first time)
+      return prefs.getBool('setup_complete') ?? false;
+    } catch (_) {
+      return false;
+    }
   }
 
   @override
@@ -48,7 +72,6 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo container
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
